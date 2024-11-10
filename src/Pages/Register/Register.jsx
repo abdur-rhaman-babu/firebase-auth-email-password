@@ -99,11 +99,7 @@ const Register = () => {
             </button>
             </div>
             <h2 className="font-semibold text-base text-red-700">{password}</h2>
-            <label className="label">
-              <a href="#" className="label-text-alt link link-hover">
-                Forgot password?
-              </a>
-            </label>
+            
             <div className="form-control">
               <label className="cursor-pointer justify-start gap-4 label">
                 <input
