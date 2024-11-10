@@ -1,4 +1,4 @@
-import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
+import { sendPasswordResetEmail, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../Firebase/firebase.init";
 import { useRef, useState } from "react";
 
@@ -10,9 +10,11 @@ const Login = () => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
+    const name = e.target.name.value;
+    const photo = e.target.photo.value
     // console.log(email, password);
 
-    signInWithEmailAndPassword(auth, email, password)
+    signInWithEmailAndPassword(auth, email,password)
       .then((result) => {
         
         if (!result.user.emailVerified) {
@@ -23,6 +25,15 @@ const Login = () => {
           setErrorMessage('')
           console.log(result.user);
         }
+
+        const profile = {
+          displayName: name,
+          photoURL: photo
+        }
+        updateProfile(auth.currentUser, profile)
+        .then(()=>{
+          alert('update your profile')
+        })
 
       })
       .catch((error) => {
@@ -45,19 +56,30 @@ const Login = () => {
     }
   }
   return (
-    <div className="hero bg-base-200 min-h-screen">
-      <div className="hero-content flex-col lg:flex-row-reverse">
-        <div className="text-center lg:text-left">
-          <h1 className="text-5xl font-bold">Login now!</h1>
-          <p className="py-6">
-            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-            excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
-            a id nisi.
-          </p>
-        </div>
-        <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+
+        <div className="card bg-base-100 mx-auto w-full max-w-sm mt-10 shrink-0 shadow-2xl">
           <form onSubmit={handleLogin} className="card-body">
             <div className="form-control">
+              <label className="label">
+                <span className="label-text">Name</span>
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="name"
+                className="input input-bordered"
+                required
+              />
+              <label className="label">
+                <span className="label-text">Photo</span>
+              </label>
+              <input
+                type="text"
+                name="photo"
+                placeholder="photo"
+                className="input input-bordered"
+                required
+              />
               <label className="label">
                 <span className="label-text">Email</span>
               </label>
@@ -94,8 +116,6 @@ const Login = () => {
             <p className="text-green-400 font-semibold">{success && "Login Successfully"}</p>
           </form>
         </div>
-      </div>
-    </div>
   );
 };
 
