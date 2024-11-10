@@ -12,7 +12,8 @@ const Register = () => {
 
     const email = e.target.email.value;
     const password = e.target.password.value;
-    console.log(email, password);
+    const terms = e.target.terms.checked;
+    console.log(email, password, terms);
     setPassword("");
     setErrorMessage("");
     if (password.length < 6) {
@@ -26,6 +27,11 @@ const Register = () => {
       setPassword(
         "At least one character, one digit, one uppercase, one lowercase"
       );
+      return;
+    }
+
+    if(!terms){
+      setPassword('Please checked the terms and condition')
       return;
     }
 
@@ -71,10 +77,7 @@ const Register = () => {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-10 top-44"
             >
-              {
-                showPassword ? <FaEyeSlash /> : <FaEye />
-              }
-             
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
             <input
               type={`${showPassword ? "text" : "password"}`}
@@ -89,6 +92,16 @@ const Register = () => {
                 Forgot password?
               </a>
             </label>
+            <div className="form-control">
+              <label className="cursor-pointer justify-start gap-4 label">
+                <input
+                  type="checkbox"
+                  name="terms"
+                  className="checkbox checkbox-accent"
+                />
+                <span className="label-text">Are you agree??</span>
+              </label>
+            </div>
           </div>
           <div className="form-control mt-6">
             <button className="btn btn-primary">Login</button>
