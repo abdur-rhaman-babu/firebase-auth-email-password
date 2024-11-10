@@ -1,10 +1,14 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { auth } from "../../Firebase/firebase.init";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Register = () => {
   const [errorMessage, setErrorMessage] = useState("");
+  const [success, setSuccess] = useState(false)
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const handleSubmitWithEmailPassword = (e) => {
@@ -30,28 +34,35 @@ const Register = () => {
       return;
     }
 
-    if(!terms){
-      setPassword('Please checked the terms and condition')
+    if (!terms) {
+      setPassword("Please checked the terms and condition");
       return;
     }
+
+    
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
         console.log(result);
-        setErrorMessage("successfully added");
+        sendEmailVerification(auth.currentUser).then(() => {
+          alert("Email Verification sent to your email");
+        });
+        setSuccess(true);
       })
       .catch((error) => {
         console.log("ERROR", error);
         setErrorMessage(error.message);
       });
+
+   
   };
   return (
     <div className="hero bg-base-200 min-h-screen">
       <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-        <h1 className="text-2xl text-center mt-3 font-bold">Login now!</h1>
+        <h1 className="text-2xl text-center mt-3 font-bold">Register Now</h1>
         <form
           onSubmit={handleSubmitWithEmailPassword}
-          className="card-body relative"
+          className="card-body"
         >
           <div className="form-control">
             <label className="label">
@@ -73,19 +84,20 @@ const Register = () => {
             <label className="label">
               <span className="label-text">Password</span>
             </label>
-            <button
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-10 top-44"
-            >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </button>
+            <div className="border rounded-xl flex items-center justify-between px-4">
             <input
               type={`${showPassword ? "text" : "password"}`}
               name="password"
               placeholder="password"
-              className="input input-bordered"
+              className="outline-none border-none w-full py-3"
               required
             />
+              <button
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+            </div>
             <h2 className="font-semibold text-base text-red-700">{password}</h2>
             <label className="label">
               <a href="#" className="label-text-alt link link-hover">
@@ -104,8 +116,13 @@ const Register = () => {
             </div>
           </div>
           <div className="form-control mt-6">
-            <button className="btn btn-primary">Login</button>
+            <button className="btn btn-primary">Register</button>
           </div>
+          <p className="text-green-400 font-semibold">
+            {
+              success && 'successfully Registered'
+            }
+          </p>
         </form>
       </div>
     </div>

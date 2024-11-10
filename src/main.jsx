@@ -6,6 +6,7 @@ import Root from './components/Root/Root'
 import Home from './Pages/Home/Home'
 import Register from './Pages/Register/Register'
 import SignUp from './Pages/SignUp/SignUp'
+import Login from './Pages/Login/Login'
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path:'/signup',
         element:<SignUp/>
+      },
+      {
+        path:'/login',
+        element:<Login/>
       }
     ]
   }

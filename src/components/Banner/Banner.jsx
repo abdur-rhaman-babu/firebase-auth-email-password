@@ -5,6 +5,7 @@ const Banner = () => {
     { path: "/", page: "Home" },
     { path: "/register", page: "Register" },
     { path: "/signup", page: "Sign Up" },
+    { path: "/login", page: "Login" },
   ];
   return (
     <div className="navbar bg-base-100">
